@@ -171,6 +171,16 @@ p3_bm_kc<-sum(p3$bm_kc)
 
 ```{r}
 ###calculate biomass per plot per square meter based on total size of the plot
+
+p1_bm_kc_sq <- p1_bm_kc/1250
+
+p2_bm_kc_sq <- p2_bm_kc/1250
+
+p3_bm_kc_sq <- p3_bm_kc/1250
+
+p1_bm_kc_sq
+p2_bm_kc_sq
+p3_bm_kc_sq
 ```
 
 
