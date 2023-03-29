@@ -23,20 +23,41 @@ library(cowplot)
 ```{r}
 #Read in plot xlsx data for each plot
 p1<-read_csv(here("data", "Plot1.csv"))
-head(p1)
+# head(p1)
 
 p2<-read_csv(here("data","Plot2.csv"))
-head(p2)
+# head(p2)
 
 p3<-read_csv(here("data", "Plot3.csv"))
-head(p3)
+# head(p3)
 ```
+
+```{r}
+###read in 2023 data
+
+p1_23 <-read_csv(here("data", "Plot1_2023.csv"))
+# head(p1_23)
+
+p2_23 <-read_csv(here("data","Plot2_2023.csv"))
+# head(p2_23)
+
+p3_23 <-read_csv(here("data", "Plot3_2023.csv"))
+# head(p3_23)
+```
+
+
+
+### Calculate Aboveground Biomass
+
 
 ```{r}
 #parameters for Jenkins:
 b0_j<--0.7152
 b1_j<-1.7029
 ```
+
+
+**2019**
 
 ```{r}
 #Calculate aboveground biomass per tree (log is ln in R)
@@ -47,33 +68,6 @@ p2$bm_jenkins<-exp(b0_j+b1_j*log(p2$dbh))
 p3$bm_jenkins<-exp(b0_j+b1_j*log(p3$dbh))
 
 ```
-
-```{r}
-p1_jenkins <- p1 %>% 
-  select(treeID, bm_jenkins) %>% 
-  kable(col.names = c("Tree ID", "BM Jenkins"),
-        caption = "Plot 1 Jenkins 2019") %>% 
-  kable_classic(position = "center")
-
-# p1_jenkins
-
-p2_jenkins <- p2 %>% 
-  select(treeID, bm_jenkins) %>% 
-  kable(col.names = c("Tree ID", "BM Jenkins"),
-        caption = "Plot 2 Jenkins 2019") %>% 
-  kable_classic(position = "center")
-
-# p2_jenkins
-
-p3_jenkins <- p3 %>% 
-  select(treeID, bm_jenkins) %>% 
-  kable(col.names = c("Tree ID", "BM Jenkins"),
-        caption = "Plot 3 Jenkins 2019") %>% 
-  kable_classic(position = "center")
-
-# p3_jenkins
-```
-
 
 ```{r}
 #paramters for KC:
@@ -91,31 +85,82 @@ p3$bm_kc<-b1_kc*(p3$dbh^b2_kc)
 ```
 
 ```{r}
-p1_kc <- p1 %>% 
-  select(treeID, bm_kc) %>% 
-  kable(col.names = c("Tree ID", "BM KC"),
-        caption = "Plot 1 KC 2019") %>% 
+p1_jenkins_kc <- p1 %>% 
+  select(treeID, bm_jenkins, bm_kc) %>% 
+  kable(col.names = c("Tree ID", "Biomass Jenkins", "Biomass KC"),
+        caption = "Plot 1 Biomass 2019") %>% 
   kable_classic(position = "center")
 
-# p1_kc
+p1_jenkins_kc
 
-p2_kc <- p2 %>% 
-  select(treeID, bm_kc) %>% 
-  kable(col.names = c("Tree ID", "BM KC"),
-        caption = "Plot 2 KC 2019") %>% 
+p2_jenkins_kc <- p2 %>% 
+  select(treeID, bm_jenkins, bm_kc) %>% 
+  kable(col.names = c("Tree ID", "Biomass Jenkins", "Biomass KC"),
+        caption = "Plot 2 Biomass 2019") %>% 
   kable_classic(position = "center")
 
-# p2_kc
+p2_jenkins_kc
 
-p3_kc <- p3 %>% 
-  select(treeID, bm_kc) %>% 
-  kable(col.names = c("Tree ID", "BM KC"),
-        caption = "Plot 3 KC 2019") %>% 
+p3_jenkins_kc <- p3 %>% 
+  select(treeID, bm_jenkins, bm_kc) %>% 
+  kable(col.names = c("Tree ID", "Biomass Jenkins", "Biomass KC"),
+        caption = "Plot 3 Biomass 2019") %>% 
   kable_classic(position = "center")
 
-# p3_kc
+p3_jenkins_kc
 ```
 
+
+**2023**
+
+```{r}
+#Calculate aboveground biomass per tree (log is ln in R)
+p1_23$bm_jenkins<-exp(b0_j+b1_j*log(p1_23$dbh_cm))
+
+p2_23$bm_jenkins<-exp(b0_j+b1_j*log(p2_23$dbh_cm))
+
+p3_23$bm_jenkins<-exp(b0_j+b1_j*log(p3_23$dbh_cm))
+```
+
+```{r}
+#Calculate aboveground biomass per tree
+p1_23$bm_kc<-b1_kc*(p1_23$dbh_cm^b2_kc)
+
+p2_23$bm_kc<-b1_kc*(p2_23$dbh_cm^b2_kc)
+
+p3_23$bm_kc<-b1_kc*(p3_23$dbh_cm^b2_kc)
+```
+
+```{r}
+p1_jenkins_kc23 <- p1_23 %>% 
+  select(treeID, bm_jenkins, bm_kc) %>% 
+  kable(col.names = c("Tree ID", "Biomass Jenkins", "Biomass KC"),
+        caption = "Plot 1 Biomass 2023") %>% 
+  kable_classic(position = "center")
+
+p1_jenkins_kc23
+
+p2_jenkins_kc23 <- p2_23 %>% 
+  select(treeID, bm_jenkins, bm_kc) %>% 
+  kable(col.names = c("Tree ID", "Biomass Jenkins", "Biomass KC"),
+        caption = "Plot 2 Biomass 2023") %>% 
+  kable_classic(position = "center")
+
+p2_jenkins_kc23
+
+p3_jenkins_kc23 <- p3_23 %>% 
+  select(treeID, bm_jenkins, bm_kc) %>% 
+  kable(col.names = c("Tree ID", "Biomass Jenkins", "Biomass KC"),
+        caption = "Plot 3 Biomass 2023") %>% 
+  kable_classic(position = "center")
+
+p3_jenkins_kc23
+```
+
+
+### Plot Aboveground Biomass
+
+**2019**
 
 ```{r}
 p1_gg <- ggplot() +
@@ -123,7 +168,7 @@ p1_gg <- ggplot() +
   geom_line(data = p1, aes(x = dbh, y = bm_kc), color = "green") +
   theme_minimal() +
   labs(x = "Diameter at Breast Height (dbh) (cm)",
-        y = "Aboveground Biomass (?)",
+        y = "Aboveground Biomass (kg)",
         title = "DBH-Biomass Relationship",
         subtitle = "2019") 
 
@@ -134,7 +179,7 @@ p2_gg <- ggplot() +
   geom_line(data = p2, aes(x = dbh, y = bm_kc), color = "green") +
   theme_minimal() +
   labs(x = "Diameter at Breast Height (dbh) (cm)",
-        y = "Aboveground Biomass (?)",
+        y = "Aboveground Biomass (kg)",
         title = "DBH-Biomass Relationship",
         subtitle = "2019") 
 
@@ -145,7 +190,7 @@ p3_gg <- ggplot() +
   geom_line(data = p3, aes(x = dbh, y = bm_kc), color = "green") +
   theme_minimal() +
   labs(x = "Diameter at Breast Height (dbh) (cm)",
-        y = "Aboveground Biomass (?)",
+        y = "Aboveground Biomass (kg)",
         title = "DBH-Biomass Relationship",
         subtitle = "2019") 
 
@@ -154,6 +199,50 @@ p3_gg <- ggplot() +
 plot_grid(p1_gg, p2_gg, p3_gg, labels = c('P1', 'P2', 'P3'))
 ```
 
+
+**2023**
+
+```{r}
+p1_gg23 <- ggplot() +
+  geom_line(data = p1_23, aes(x = dbh_cm, y = bm_jenkins), color = "blue") +
+  geom_line(data = p1_23, aes(x = dbh_cm, y = bm_kc), color = "green") +
+  theme_minimal() +
+  labs(x = "Diameter at Breast Height (dbh) (cm)",
+        y = "Aboveground Biomass (kg)",
+        title = "DBH-Biomass Relationship",
+        subtitle = "2023") 
+
+# p1_gg23
+
+p2_gg23 <- ggplot() +
+  geom_line(data = p2_23, aes(x = dbh_cm, y = bm_jenkins), color = "blue") +
+  geom_line(data = p2_23, aes(x = dbh_cm, y = bm_kc), color = "green") +
+  theme_minimal() +
+  labs(x = "Diameter at Breast Height (dbh) (cm)",
+        y = "Aboveground Biomass (kg)",
+        title = "DBH-Biomass Relationship",
+        subtitle = "2023") 
+
+# p2_gg23
+
+p3_gg23 <- ggplot() +
+  geom_line(data = p3_23, aes(x = dbh_cm, y = bm_jenkins), color = "blue") +
+  geom_line(data = p3_23, aes(x = dbh_cm, y = bm_kc), color = "green") +
+  theme_minimal() +
+  labs(x = "Diameter at Breast Height (dbh) (cm)",
+        y = "Aboveground Biomass (kg)",
+        title = "DBH-Biomass Relationship",
+        subtitle = "2023") 
+
+# p3_gg23
+
+plot_grid(p1_gg23, p2_gg23, p3_gg23, labels = c('P1', 'P2', 'P3'))
+```
+
+
+### Biomass per Plot
+
+**2019**
 
 ```{r}
 #Biomass and carbon:
@@ -178,17 +267,93 @@ p2_bm_kc_sq <- p2_bm_kc/1250
 
 p3_bm_kc_sq <- p3_bm_kc/1250
 
-p1_bm_kc_sq
-p2_bm_kc_sq
-p3_bm_kc_sq
+all_biomass_sq <- rbind(p1_bm_kc_sq, p2_bm_kc_sq, p3_bm_kc_sq) %>% 
+  kable(col.names = c("biomass/m^2"),
+        caption = "Biomass per Square Meter") %>% 
+  kable_classic(position = "center")
+
+all_biomass_sq
+```
+
+
+**2023**
+
+```{r}
+#Calculate aboveground biomass per plot for Karlik_Chojnacky
+p1_bm_kc23 <- sum(p1_23$bm_kc)
+p2_bm_kc23 <- sum(p2_23$bm_kc)
+p3_bm_kc23 <- sum(p3_23$bm_kc)
+```
+
+```{r}
+###calculate biomass per plot per square meter based on total size of the plot
+
+p1_bm_kc_sq23 <- p1_bm_kc23/1250
+
+p2_bm_kc_sq23 <- p2_bm_kc23/1250
+
+p3_bm_kc_sq23 <- p3_bm_kc23/1250
+
+all_biomass_sq23 <- rbind(p1_bm_kc_sq23, p2_bm_kc_sq23, p3_bm_kc_sq23) %>% 
+  kable(col.names = c("biomass/m^2"),
+        caption = "Biomass per Square Meter") %>% 
+  kable_classic(position = "center")
+
+all_biomass_sq23
 ```
 
 
 
+### Carbon per Plot
+
+**2019**
+
+```{r}
+#Convert estimate to tree carbon per hectare (hint: use 'carboncontent' variable to convert biomass estimates to carbon; then use 'totalplotarea' in hectares variable to convert to carbon per hectare)
+#make a table of the output
+
+###(bm*0.4585)/(1250m2 * 0.0001) to get carbon per hectare
+
+p1_carbon <- p1_bm_kc*carboncontent
+p2_carbon <- p2_bm_kc*carboncontent
+p3_carbon <- p3_bm_kc*carboncontent
+
+p1_carbon_ha <- p1_carbon/totalplotarea
+p2_carbon_ha <- p2_carbon/totalplotarea
+p3_carbon_ha <- p3_carbon/totalplotarea
+
+all_carbon_ha <- rbind(p1_carbon_ha, p2_carbon_ha, p3_carbon_ha) %>% 
+  kable(col.names = c("carbon/ha"),
+        caption = "Tree Carbon per Hectare (2019)") %>% 
+  kable_classic(position = "center")
+
+all_carbon_ha
+```
 
 
+**2023**
+
+```{r}
+p1_carbon23 <- p1_bm_kc23*carboncontent
+p2_carbon23 <- p2_bm_kc23*carboncontent
+p3_carbon23 <- p3_bm_kc23*carboncontent
+
+p1_carbon_ha23 <- p1_carbon23/totalplotarea
+p2_carbon_ha23 <- p2_carbon23/totalplotarea
+p3_carbon_ha23 <- p3_carbon23/totalplotarea
+
+all_carbon_ha23 <- rbind(p1_carbon_ha23, p2_carbon_ha23, p3_carbon_ha23) %>% 
+  kable(col.names = c("carbon/ha"),
+        caption = "Tree Carbon per Hectare (2023)") %>% 
+  kable_classic(position = "center")
+
+all_carbon_ha23
+```
 
 
+### Sources of Error and Uncertainty
+
+Text here
 
 
 
