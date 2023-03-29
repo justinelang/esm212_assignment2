@@ -1,0 +1,170 @@
+---
+title: "Assignment 2"
+author: "Justine Lang"
+date: "2023-03-29"
+output: 
+  html_document: 
+    code_folding: hide
+---
+
+```{r setup, echo = TRUE, warning = FALSE, message = FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+
+library(readxl)
+library(tidyverse)
+library(kableExtra)
+library(ggplot2)
+library(formattable)
+library(here)
+library(janitor)
+library(cowplot)
+```
+
+```{r}
+#Read in plot xlsx data for each plot
+p1<-read_csv(here("data", "Plot1.csv"))
+head(p1)
+
+p2<-read_csv(here("data","Plot2.csv"))
+head(p2)
+
+p3<-read_csv(here("data", "Plot3.csv"))
+head(p3)
+```
+
+```{r}
+#parameters for Jenkins:
+b0_j<--0.7152
+b1_j<-1.7029
+```
+
+```{r}
+#Calculate aboveground biomass per tree (log is ln in R)
+p1$bm_jenkins<-exp(b0_j+b1_j*log(p1$dbh))
+
+p2$bm_jenkins<-exp(b0_j+b1_j*log(p2$dbh))
+
+p3$bm_jenkins<-exp(b0_j+b1_j*log(p3$dbh))
+
+```
+
+```{r}
+p1_jenkins <- p1 %>% 
+  select(treeID, bm_jenkins) %>% 
+  kable(col.names = c("Tree ID", "BM Jenkins"),
+        caption = "Plot 1 Jenkins 2019") %>% 
+  kable_classic(position = "center")
+
+# p1_jenkins
+
+p2_jenkins <- p2 %>% 
+  select(treeID, bm_jenkins) %>% 
+  kable(col.names = c("Tree ID", "BM Jenkins"),
+        caption = "Plot 2 Jenkins 2019") %>% 
+  kable_classic(position = "center")
+
+# p2_jenkins
+
+p3_jenkins <- p3 %>% 
+  select(treeID, bm_jenkins) %>% 
+  kable(col.names = c("Tree ID", "BM Jenkins"),
+        caption = "Plot 3 Jenkins 2019") %>% 
+  kable_classic(position = "center")
+
+# p3_jenkins
+```
+
+
+```{r}
+#paramters for KC:
+b1_kc<-0.068
+b2_kc<-2.569
+```
+
+```{r}
+#Calculate aboveground biomass per tree
+p1$bm_kc<-b1_kc*(p1$dbh^b2_kc)
+
+p2$bm_kc<-b1_kc*(p2$dbh^b2_kc)
+
+p3$bm_kc<-b1_kc*(p3$dbh^b2_kc)
+```
+
+```{r}
+p1_kc <- p1 %>% 
+  select(treeID, bm_kc) %>% 
+  kable(col.names = c("Tree ID", "BM KC"),
+        caption = "Plot 1 KC 2019") %>% 
+  kable_classic(position = "center")
+
+# p1_kc
+
+p2_kc <- p2 %>% 
+  select(treeID, bm_kc) %>% 
+  kable(col.names = c("Tree ID", "BM KC"),
+        caption = "Plot 2 KC 2019") %>% 
+  kable_classic(position = "center")
+
+# p2_kc
+
+p3_kc <- p3 %>% 
+  select(treeID, bm_kc) %>% 
+  kable(col.names = c("Tree ID", "BM KC"),
+        caption = "Plot 3 KC 2019") %>% 
+  kable_classic(position = "center")
+
+# p3_kc
+```
+
+
+```{r}
+p1_gg <- ggplot() +
+  geom_line(data = p1, aes(x = dbh, y = bm_jenkins), color = "blue") +
+  geom_line(data = p1, aes(x = dbh, y = bm_kc), color = "green") +
+  theme_minimal() +
+  labs(x = "Diameter at Breast Height (dbh) (cm)",
+        y = "Aboveground Biomass (?)",
+        title = "DBH-Biomass Relationship",
+        subtitle = "2019") 
+
+# p1_gg
+
+p2_gg <- ggplot() +
+  geom_line(data = p2, aes(x = dbh, y = bm_jenkins), color = "blue") +
+  geom_line(data = p2, aes(x = dbh, y = bm_kc), color = "green") +
+  theme_minimal() +
+  labs(x = "Diameter at Breast Height (dbh) (cm)",
+        y = "Aboveground Biomass (?)",
+        title = "DBH-Biomass Relationship",
+        subtitle = "2019") 
+
+# p2_gg
+
+p3_gg <- ggplot() +
+  geom_line(data = p3, aes(x = dbh, y = bm_jenkins), color = "blue") +
+  geom_line(data = p3, aes(x = dbh, y = bm_kc), color = "green") +
+  theme_minimal() +
+  labs(x = "Diameter at Breast Height (dbh) (cm)",
+        y = "Aboveground Biomass (?)",
+        title = "DBH-Biomass Relationship",
+        subtitle = "2019") 
+
+# p3_gg
+
+plot_grid(p1_gg, p2_gg, p3_gg, labels = c('P1', 'P2', 'P3'))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
