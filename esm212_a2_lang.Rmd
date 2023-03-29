@@ -155,7 +155,23 @@ plot_grid(p1_gg, p2_gg, p3_gg, labels = c('P1', 'P2', 'P3'))
 ```
 
 
+```{r}
+#Biomass and carbon:
+totalplotarea<-(50*25)*0.0001 #50 meter by 25 meter, converted to hectares
+carboncontent<-.4585 #The carbon content of branch/stem material combined ranged from 45.06% to 46.70%, with a mean of 45.85% (SE 0.276%); mean can be used to convert biomass to carbon storage
 
+```
+
+```{r}
+#Calculate aboveground biomass per plot for Karlik_Chojnacky
+p1_bm_kc<-sum(p1$bm_kc)
+p2_bm_kc<-sum(p2$bm_kc)
+p3_bm_kc<-sum(p3$bm_kc)
+```
+
+```{r}
+###calculate biomass per plot per square meter based on total size of the plot
+```
 
 
 
