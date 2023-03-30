@@ -85,29 +85,29 @@ p3$bm_kc<-b1_kc*(p3$dbh^b2_kc)
 ```
 
 ```{r}
-p1_jenkins_kc <- p1 %>% 
-  select(treeID, bm_jenkins, bm_kc) %>% 
-  kable(col.names = c("Tree ID", "Biomass Jenkins", "Biomass KC"),
-        caption = "Plot 1 Biomass 2019") %>% 
+p1$plot <- 1
+
+p2$plot <- 2
+
+p3$plot <- 3
+```
+
+```{r}
+all_plots <- p1 %>% 
+  full_join(p2) %>% 
+  full_join(p3)
+```
+
+
+```{r}
+allplots_jenkins_kc <- all_plots %>% 
+  select(plot, treeID, bm_jenkins, bm_kc) %>% 
+  kable(col.names = c("Plot", "Tree ID", "Biomass Jenkins", "Biomass KC"),
+        caption = "Biomass 2019") %>% 
   kable_classic(position = "center")
 
-p1_jenkins_kc
+allplots_jenkins_kc
 
-p2_jenkins_kc <- p2 %>% 
-  select(treeID, bm_jenkins, bm_kc) %>% 
-  kable(col.names = c("Tree ID", "Biomass Jenkins", "Biomass KC"),
-        caption = "Plot 2 Biomass 2019") %>% 
-  kable_classic(position = "center")
-
-p2_jenkins_kc
-
-p3_jenkins_kc <- p3 %>% 
-  select(treeID, bm_jenkins, bm_kc) %>% 
-  kable(col.names = c("Tree ID", "Biomass Jenkins", "Biomass KC"),
-        caption = "Plot 3 Biomass 2019") %>% 
-  kable_classic(position = "center")
-
-p3_jenkins_kc
 ```
 
 
@@ -130,6 +130,7 @@ p2_23$bm_kc<-b1_kc*(p2_23$dbh_cm^b2_kc)
 
 p3_23$bm_kc<-b1_kc*(p3_23$dbh_cm^b2_kc)
 ```
+
 
 ```{r}
 p1_jenkins_kc23 <- p1_23 %>% 
