@@ -47,7 +47,7 @@ p3_23 <-read_csv(here("data", "Plot3_2023.csv"))
 
 
 
-### Calculate Aboveground Biomass
+### 1 & 2) Calculate Aboveground Biomass
 
 
 ```{r}
@@ -70,7 +70,7 @@ p3$bm_jenkins<-exp(b0_j+b1_j*log(p3$dbh))
 ```
 
 ```{r}
-#paramters for KC:
+#parameters for KC:
 b1_kc<-0.068
 b2_kc<-2.569
 ```
@@ -103,7 +103,7 @@ all_plots <- p1 %>%
 allplots_bm <- all_plots %>% 
   select(plot, treeID, bm_jenkins, bm_kc) %>% 
   kable(col.names = c("Plot", "Tree ID", "Biomass Jenkins (kg)", "Biomass KC (kg)"),
-        caption = "Biomass 2019") %>% 
+        caption = "Table 1: Biomass (2019)") %>% 
   kable_classic(position = "center")
 
 allplots_bm
@@ -149,7 +149,7 @@ all_plots23 <- p1_23 %>%
 allplots_bm23 <- all_plots23 %>% 
   select(plot, treeID, bm_jenkins, bm_kc) %>% 
   kable(col.names = c("Plot", "Tree ID", "Biomass Jenkins (kg)", "Biomass KC (kg)"),
-        caption = "Biomass 2023") %>% 
+        caption = "Table 2: Biomass (2023)") %>% 
   kable_classic(position = "center")
 
 allplots_bm23
@@ -159,11 +159,11 @@ allplots_bm23
 
 
 
-### Plot Aboveground Biomass
+### 3) Plot Aboveground Biomass
 
 **2019**
 
-```{r}
+```{r fig 1, fig.align='center', fig.cap="Figure 1: DBH-biomass relationships for three different plots in 2019, based on Jenkins et al. (2004) (blue line) and Karlik and Chojnacky (2014) (green line) allometric equations."}
 p1_gg <- ggplot() +
   geom_line(data = p1, aes(x = dbh, y = bm_jenkins), color = "blue") +
   geom_line(data = p1, aes(x = dbh, y = bm_kc), color = "green") +
@@ -203,7 +203,7 @@ plot_grid(p1_gg, p2_gg, p3_gg, labels = c('P1', 'P2', 'P3'))
 
 **2023**
 
-```{r}
+```{r fig 2, fig.align='center', fig.cap="Figure 2: DBH-biomass relationships for three different plots in 2023, based on Jenkins et al. (2004) (blue line) and Karlik and Chojnacky (2014) (green line) allometric equations."}
 p1_gg23 <- ggplot() +
   geom_line(data = p1_23, aes(x = dbh_cm, y = bm_jenkins), color = "blue") +
   geom_line(data = p1_23, aes(x = dbh_cm, y = bm_kc), color = "green") +
@@ -241,7 +241,7 @@ plot_grid(p1_gg23, p2_gg23, p3_gg23, labels = c('P1', 'P2', 'P3'))
 ```
 
 
-### Biomass per Plot
+### 4) Biomass per Plot
 
 **2019**
 
@@ -257,10 +257,19 @@ carboncontent<-.4585 #The carbon content of branch/stem material combined ranged
 p1_bm_kc<-sum(p1$bm_kc)
 p2_bm_kc<-sum(p2$bm_kc)
 p3_bm_kc<-sum(p3$bm_kc)
+
+all_biomass <- rbind(p1_bm_kc, p2_bm_kc, p3_bm_kc) %>% 
+  kable(col.names = c("Biomass (kg)"),
+        caption = "Table 3: Biomass per Plot (2019)") %>% 
+  kable_classic(position = "center")
+
+all_biomass
 ```
 
 ```{r}
 ###calculate biomass per plot per square meter based on total size of the plot
+
+### total plot area is 0.125 hectares, which is 1250 square meters (1 ha = 10,000 m^2)
 
 p1_bm_kc_sq <- p1_bm_kc/1250
 
@@ -269,8 +278,8 @@ p2_bm_kc_sq <- p2_bm_kc/1250
 p3_bm_kc_sq <- p3_bm_kc/1250
 
 all_biomass_sq <- rbind(p1_bm_kc_sq, p2_bm_kc_sq, p3_bm_kc_sq) %>% 
-  kable(col.names = c("biomass/m^2"),
-        caption = "Biomass per Square Meter") %>% 
+  kable(col.names = c("Biomass/m^2"),
+        caption = "Table 4: Biomass per Square Meter (2019)") %>% 
   kable_classic(position = "center")
 
 all_biomass_sq
@@ -284,6 +293,13 @@ all_biomass_sq
 p1_bm_kc23 <- sum(p1_23$bm_kc)
 p2_bm_kc23 <- sum(p2_23$bm_kc)
 p3_bm_kc23 <- sum(p3_23$bm_kc)
+
+all_biomass23 <- rbind(p1_bm_kc23, p2_bm_kc23, p3_bm_kc23) %>% 
+  kable(col.names = c("Biomass (kg)"),
+        caption = "Table 5: Biomass per Plot (2023)") %>% 
+  kable_classic(position = "center")
+
+all_biomass23
 ```
 
 ```{r}
@@ -297,7 +313,7 @@ p3_bm_kc_sq23 <- p3_bm_kc23/1250
 
 all_biomass_sq23 <- rbind(p1_bm_kc_sq23, p2_bm_kc_sq23, p3_bm_kc_sq23) %>% 
   kable(col.names = c("biomass/m^2"),
-        caption = "Biomass per Square Meter") %>% 
+        caption = "Table 6: Biomass per Square Meter (2023)") %>% 
   kable_classic(position = "center")
 
 all_biomass_sq23
@@ -314,6 +330,7 @@ all_biomass_sq23
 #make a table of the output
 
 ###(bm*0.4585)/(1250m2 * 0.0001) to get carbon per hectare
+### in other words, (bm*carboncontent)/totalplotarea
 
 p1_carbon <- p1_bm_kc*carboncontent
 p2_carbon <- p2_bm_kc*carboncontent
@@ -325,7 +342,7 @@ p3_carbon_ha <- p3_carbon/totalplotarea
 
 all_carbon_ha <- rbind(p1_carbon_ha, p2_carbon_ha, p3_carbon_ha) %>% 
   kable(col.names = c("carbon/ha"),
-        caption = "Tree Carbon per Hectare (2019)") %>% 
+        caption = "Table 7: Tree Carbon per Hectare (2019)") %>% 
   kable_classic(position = "center")
 
 all_carbon_ha
@@ -345,16 +362,20 @@ p3_carbon_ha23 <- p3_carbon23/totalplotarea
 
 all_carbon_ha23 <- rbind(p1_carbon_ha23, p2_carbon_ha23, p3_carbon_ha23) %>% 
   kable(col.names = c("carbon/ha"),
-        caption = "Tree Carbon per Hectare (2023)") %>% 
+        caption = "Table 8: Tree Carbon per Hectare (2023)") %>% 
   kable_classic(position = "center")
 
 all_carbon_ha23
 ```
 
 
-### Sources of Error and Uncertainty
+### 5) Sources of Error and Uncertainty
 
-Text here
+**Briefly discuss the major sources of uncertainty and error in your estimate of carbon in blue oak woodlands at Sedgwick Reserve, and how you might reduce the uncertainty in that estimate.**
+
+There are sources of uncertainty that lie with the KC biomass equation itself. In their paper, they indicated that the study was the first of its kind for blue oak in California and that they were limited by a small sample size. The Jenkins biomass equation indicates that the estimated biomass and resulting estimated carbon could have been much smaller, although the Jenkins equation involves some assumptions (i.e., that the parameters for blue oaks were equivalent to those for the juniper/oak/mesquite category), which may have contributed to its own sources of error and uncertainty. Relatedly, while the KC parameters were based on blue oak, we also applied them to California live oak, which may not have been exactly equivalent to blue oak. 
+
+Karlik and Chojnacky recommended duplicating their study with a larger sample size of smaller and larger oaks throughout more sites in California, plus additional carbon sampling, to improve their biomass and carbon estimations. Those of us that gathered the 2023 data also could have been more careful with our sampling technique, especially in the plots where the slope was steep and the trees were leaning, to reduce the initial sampling errors. 
 
 
 
